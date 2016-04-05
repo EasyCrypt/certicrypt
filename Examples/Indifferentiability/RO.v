@@ -2,6 +2,7 @@ Require Import Semantics.
 
 Set Implicit Arguments.
 
+Local Close Scope bool_scope.
 
 (** TODO: suggest to add to ALEA *)
 Lemma fplus_fzero_r: forall (A:Type) (f:A -o> U), fplus f (fzero _) == f.
@@ -1717,6 +1718,7 @@ Module Indifferentiability (A:FINITE_TYPE) (R:FINITE_TYPE) (P:FINITE_TYPE)
   add_decl (E' E0) InvF InvF_args (refl_equal true) InvF_Body InvF_ret.
 
  Close Scope nat_scope.
+ Close Scope bool_scope.
 
  (* ******************************  CLAIM 2  ****************************** *)
  (* Let [f:A -> R] be an (alpha,epsilon)-weak encoding v2 and let           *) 

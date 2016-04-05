@@ -5,6 +5,7 @@ Require Import Sigma.
 
 Set Implicit Arguments.
 
+Local Close Scope bool_scope.
 
 Module OR 
  (S1 : SIGMA N1 Sem BP

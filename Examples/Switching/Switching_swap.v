@@ -2,6 +2,8 @@ Require Import SwitchingSem.
 
 Set Implicit Arguments.
 
+Local Close Scope bool_scope.
+
 Notation bad := (Var.Gvar T.Bool 1).
 Notation L := (Var.Gvar (T.List (T.Pair (T.User BS_k) (T.User BS_k))) 2).
 Notation R := (Var.Gvar (T.List (T.User BS_k)) 3).

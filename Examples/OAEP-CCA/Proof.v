@@ -6,6 +6,8 @@ Require Export Extension.
 Require Import Bitstrings.
 Require Import ClassicalChoice.
 
+Local Close Scope bool_scope.
+
 Ltac omega' :=
  change Ent.T.List with T.List in *;
   change Ent.T.Pair with T.Pair in *;
