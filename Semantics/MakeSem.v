@@ -1,3 +1,11 @@
+(* --------------------------------------------------------------------
+ * Copyright (c) - 2006--2012 - IMDEA Software Institute
+ * Copyright (c) - 2006--2012 - Inria
+ * Copyright (c) - 2006--2012 - Microsoft Coprporation
+ *
+ * Distributed under the terms of the CeCILL-B-V1 license
+ * -------------------------------------------------------------------- *)
+
 (** * MakeSem.v : Abstract language semantics, and a functor to derive the 
  language semantics from the semantics of operators, instructions, etc *)
 
