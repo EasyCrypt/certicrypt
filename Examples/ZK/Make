@@ -1,0 +1,19 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib -I ../../Semantics
+Factoring
+Sigma.v
+SigmaSem.v
+SigmaAnd.v
+SigmaOr.v
+Homomorphism.v
+SigmaPhi.v
+ClawFree.v
+SHVZK_of_HVZK.v
+HVZK_of_SHVZK.v
+Schnorr.v
+GuillouQuisquater.v
+Okamoto.v
+FiatShamir.v
+FFS.v
+PreimageEq.v
+DiffieHellman.v

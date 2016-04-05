@@ -1,0 +1,9 @@
+-o Makefile 
+-I ../../ALEA 
+-I ../../Lib 
+-I ../../Semantics 
+ECurve
+Icart
+Semantics.v
+Padding.v
+RO.v

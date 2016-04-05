@@ -1,0 +1,8 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib -I ../../Semantics 
+SwitchingSem.v
+Switching.v
+#Switching_StDist.v
+Switching_FEL.v
+Switching_swap.v
+

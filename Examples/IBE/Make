@@ -1,0 +1,6 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib 
+-I ../../Semantics
+Extension.v
+IBE.v
+

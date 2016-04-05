@@ -1,0 +1,93 @@
++ What has been done
+
+  - A module type for generic Sigma protocols that satisfy
+    completeness, Special Honest-Verifier Zero Knowledge and
+    special soundness (i.e. SIGMA module type in Sigma.v).
+
+  - A formalization of abelian multiplicative groups and special
+    homomorphisms (Homomorphism.v).
+
+  - A functor that constructs a Sigma Phi protocol from a special
+    homomorphism and a challenge set (SigmaPhi.v). The functor
+    provides proofs that the protocol satisfies completeness,
+    Special Honest-Verifier Zero Knowledge and special soundness.
+
+  - A functor that constructs a Sigma protocol from a family of 
+    one-way trapdoor permutations (ClawFree.v). The functor 
+    provides proofs that the protocol satisfies completeness,
+    SHVZK and collision intractability.
+
+  - A functor that constructs the largest challenge set for a Sigma
+    Phi protocol from its special homomorphism (functor
+    Greatest_Challenge_Set in Homomorphism.v). It takes the natural
+    interval upper-bounded by the smallest prime divisor of the
+    special exponent. This challenge set minimizes the knowledge
+    error.
+
+  - A functor that builds the direct product of two abelian
+    multiplicative groups (Group_Prod in Homomorphism.v).
+
+  - A functor that given two special homomorphisms phi1 : G1 -> H1 and
+    phi2 : G2 -> H2, proves that the homomorphism phi (x1,x2) := (phi1
+    x1, phi2 x2), from the direct product of G1 and G2 to the direct
+    product of H1 and H2, is special (Homomorphism_Prod in
+    Homomorphism.v). A special homomorphism built by this functor can
+    be passed as an argument to the functor that constructs Sigma Phi
+    procotols. The resulting protocol is the AND-composition of the
+    protocols corresponding to phi1 and phi2.
+
+  - A functor that AND-composes two generic Sigma protocols satisfying
+    completeness, special HVZK and special soundness, and proves that 
+    the resulting protocol satisfies the same properties (functor 
+    AND in SigmaAnd.v).
+
+  - A functor that OR-composes two generic Sigma protocols satisfying
+    completeness, special HVZK and special soundness, and proves that
+    the resulting protocol satisfies the same properties (functor OR
+    in SigmaOr.v).
+
+  - Proved that the Schnorr Protocol is a Sigma Phi protocol. Given
+    two primes p,q such that q divides (p - 1), and an element 
+    g in Z/Zp of order q, we define the homomorphism phi(x) = g^x,
+    from the additive group (Zq,+) to the subgroup of Z/Zp generated
+    by g (the Schnorr group). We proved that this homomorphism is
+    special, and used the functors previously defined in SigmaPhi.v 
+    to obtain proofs that the Schnorr Protocol is SHVZK, sound, and 
+    complete.
+
+  - Proved that the Okamoto, Guillou-Quisquater, Fiat-Shamir, and 
+    Feige-Fiat-Shamir schemes are instances of Sigma Phi protocols.     
+
++ What should be done
+
+  - The current status of the module for generic Sigma protocols in
+    Sigma.v is far from satisfactory. The hypotheses made about the
+    procedures of the procotol are too strong. To satisfy these
+    hyptotheses, P1, P2, V1, V2 and S must not call any subprocedures.
+    This alone breaks composability, since for instance the procedures
+    of the AND composition of two Sigma protocols call the procedures
+    of the composed protocols. One way of solving this is to restrict
+    the universal quantification over environments appearing in the
+    hypotheses to environments coinciding with some environment E' on
+    some subset X of procedures. But then functors composing protocols
+    must take an additional proof that the corresponding sets of
+    subprocedures in each protocol are disjoint. A better solution
+    (which incidentally solves the other big problem) is explained
+    below.
+
+  - We need an elegant way to deal with variable and procedure names,
+    so that composition works with arbitrary Sigma protocols,
+    regardless of the internal names they use. This could be achieved
+    by a renaming mechanism. Name clashes could be then avoided for
+    example by renaming a procedure or variable with identifier i to
+    2*i in one protocol and to 2*i+1 in the other. It should be proven
+    that renaming 'preserves' semantics, and that the proofs of
+    properties of the original protocols can be transformed into
+    proofs of the protocols resulting from renaming. How difficult it
+    is to do this is hard to assess.
+
+  - Modify the module structure in CertiCrypt so that PPT becomes
+    visible in the SIGMA module type. Then, uncomment the axioms 
+    about PPT execution of the simulator and the knowledge extractor 
+    and prove them in all module instances. Before doing this we
+    need to solve the first point above.

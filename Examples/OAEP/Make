@@ -1,0 +1,4 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib -I ../../Semantics 
+OAEPsem.v
+OAEP.v

@@ -1,0 +1,28 @@
+-o Makefile
+-I ../../../ALEA
+-I ../../../Lib
+-I ../../../Semantics
+-I ../
+-I ./Pocklington
+Pocklington/dec.v
+Pocklington/divides.v
+Pocklington/exp.v
+Pocklington/fermat.v
+Pocklington/gcd.v
+Pocklington/lemmas.v
+Pocklington/list.v
+Pocklington/modprime.v
+Pocklington/modulo.v
+Pocklington/natZ.v
+Pocklington/order.v
+Pocklington/Pocklington.v
+Pocklington/pock.v
+Pocklington/prime.v
+Zstar.v 	 
+MiscLogic.v 	 
+MiscArith.v
+MiscZArith.v 	 
+MiscLists.v 	 
+Group2.v 	 
+LittleFermat.v
+ClawFreeFactoring.v

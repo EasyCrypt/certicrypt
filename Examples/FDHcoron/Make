@@ -1,0 +1,4 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib -I ../../Semantics
+FDHcsem.v
+FDHcoron.v

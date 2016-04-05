@@ -1,0 +1,15 @@
+-o Makefile
+-I ./elliptic
+-I ./List
+-I ./N
+-I ./num
+-I ./PrimalityTest
+-I ./Tactic
+-I ./Z
+List
+N
+Tactic
+Z
+PrimalityTest
+elliptic
+num

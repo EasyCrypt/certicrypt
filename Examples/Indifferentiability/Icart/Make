@@ -1,0 +1,16 @@
+-o Makefile 
+-I ../
+-I ../../../ALEA 
+-I ../../../Lib 
+-I ../../../Semantics 
+-I ../ECurve/elliptic 
+-I ../ECurve/List
+-I ../ECurve/N 
+-I ../ECurve/num 
+-I ../ECurve/PrimalityTest 
+-I ../ECurve/Tactic
+-I ../ECurve/Z
+EncodingAux.v
+EC.v
+Icart.v
+Indifferentiable.v

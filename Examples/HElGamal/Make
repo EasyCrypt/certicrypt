@@ -1,0 +1,4 @@
+-o Makefile
+-I ../../ALEA -I ../../Lib -I ../../Semantics 
+SemHElGamal.v
+HElGamal.v
