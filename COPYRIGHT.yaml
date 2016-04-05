@@ -1,0 +1,19 @@
+entities:
+  IMDEA : "IMDEA Software Institute"
+  INRIA : "Inria"
+  MS    : "Microsoft Coprporation"
+copyrights:
+  - pattern: ["Lib/*.v", "Semantics/*.v"]
+    style: "coq"
+    license: "CeCILL-B-V1"
+    copyrights:
+      - { who: "IMDEA", date: "2006--2012" }
+      - { who: "INRIA", date: "2006--2012" }
+      - { who: "MS"   , date: "2006--2012" }
+  - pattern: ["Examples/*/*.v", "Examples/*/*/*.v", "Examples/*/*/*/*.v"]
+    style: "coq"
+    license: "CeCILL-B-V1"
+    copyrights:
+      - { who: "IMDEA", date: "2006--2012" }
+      - { who: "INRIA", date: "2006--2012" }
+      - { who: "MS"   , date: "2006--2012" }
