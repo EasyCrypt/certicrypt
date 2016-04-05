@@ -1,3 +1,11 @@
+(* --------------------------------------------------------------------
+ * Copyright (c) - 2006--2012 - IMDEA Software Institute
+ * Copyright (c) - 2006--2012 - Inria
+ * Copyright (c) - 2006--2012 - Microsoft Coprporation
+ *
+ * Distributed under the terms of the CeCILL-B-V1 license
+ * -------------------------------------------------------------------- *)
+
 (** * Instructions.v : Definition of basic instructions and boolean equality 
    over commands *)
 

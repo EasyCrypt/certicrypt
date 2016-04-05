@@ -1,3 +1,11 @@
+(* --------------------------------------------------------------------
+ * Copyright (c) - 2006--2012 - IMDEA Software Institute
+ * Copyright (c) - 2006--2012 - Inria
+ * Copyright (c) - 2006--2012 - Microsoft Coprporation
+ *
+ * Distributed under the terms of the CeCILL-B-V1 license
+ * -------------------------------------------------------------------- *)
+
 (** * SHVZK_of_HVZK.v : Special Honest-Verifier ZK protocol from
  a Honest-Verifier ZK protocol *)
 

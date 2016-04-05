@@ -1,7 +1,10 @@
-(*
- * Copyright 2007-9 David Nowak, RCIS, AIST, Japan
- * All rights reserved
- *)
+(* --------------------------------------------------------------------
+ * Copyright (c) - 2006--2012 - IMDEA Software Institute
+ * Copyright (c) - 2006--2012 - Inria
+ * Copyright (c) - 2006--2012 - Microsoft Coprporation
+ *
+ * Distributed under the terms of the CeCILL-B-V1 license
+ * -------------------------------------------------------------------- *)
 
 (** This file provides cyclic groups and their properties.
  *)
