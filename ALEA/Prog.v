@@ -928,15 +928,12 @@ Hint Resolve Imu_monotonic Imu_stable_eq.
 Lemma Imu_singl : forall (A:Type) (e:Distr A) (f:A->U),
            Ieq (Imu e (fun x => singl (f x))) (singl (mu e f)).
 unfold Ieq,Imu,singl; simpl; intuition.
-apply (mu_stable_eq e); simpl; apply ford_eq_intro; intro x; auto.
-apply (mu_stable_eq e); simpl; apply ford_eq_intro; intro x; auto.
 Save.
 
 Lemma Imu_inf : forall (A:Type) (e:Distr A) (f:A->U),
            Ieq (Imu e (fun x => inf (f x))) (inf (mu e f)).
 unfold Ieq,Imu,inf; simpl; intuition.
 exact (mu_zero e).
-apply (mu_stable_eq e); simpl; apply ford_eq_intro; intro x; auto.
 Save.
 
 Lemma Imu_sup : forall (A:Type) (e:Distr A) (f:A->U),

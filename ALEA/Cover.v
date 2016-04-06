@@ -132,8 +132,6 @@ Save.
 Lemma zero_one_cover : forall (A:Type)(f:MF A),
    zero_one f -> cover (fun x => 1 <= f x) f.
 unfold zero_one,cover; intros; split; intros; auto.
-apply (H x); intros; auto.
-absurd (1 <= f x); auto.
 Save.
 
 Lemma cover_esp_mult_left : forall (A:Type)(P:set A)(f:MF A)(p:U),
@@ -541,7 +539,7 @@ The distribution associated to [random_fin P] is
 Fixpoint sigma_fin (f:A->U)(P:A->Prop)(FP:finite P){struct FP}:U :=
 match FP with
   | (fin_eq_empty eq) => 0
-  | (fin_eq_add x Q nQx FQ eq) => (f x) + sigma_fin f FQ
+  | (@fin_eq_add _ _ x Q nQx FQ eq) => (f x) + sigma_fin f FQ
 end.
 
 Definition retract_fin (P:A->Prop) (f:A->U) :=

@@ -1,7 +1,7 @@
 Set Implicit Arguments.
 Set Strict Implicit.
 Require Export Setoid.
-Require Omega.
+Require Import Omega.
 
 (** * Sets.v: Definition of sets as predicates over a type A *)
 
@@ -132,7 +132,7 @@ Save.
 (** *** Size of a finite set *)
 Fixpoint size (P:set) (f:finite P) {struct f}: nat :=
    match f with fin_eq_empty _ => 0%nat
-              | fin_eq_add _ Q _ f' _ => S (size f')
+              | @fin_eq_add _ _ Q _ f' _ => S (size f')
    end.
 
 Lemma size_equiv : forall P Q  (f:finite P) (e:equiv P Q),
@@ -609,7 +609,7 @@ Save.
 Fixpoint nth_finite (P:set) (k:nat) (PF : finite P) {struct PF}: (k < size PF) -> A := 
   match PF as F return (k < size F) -> A with 
        fin_eq_empty H => (fun (e : k<0) => match lt_n_O k e with end)
-     | fin_eq_add x Q nqx fq eqq => 
+     | @fin_eq_add _ x Q nqx fq eqq => 
            match k as k0 return k0<S (size fq)->A with 
                 O => fun e => x
          | (S k1) => fun (e:S k1<S (size fq)) => nth_finite fq (lt_S_n k1 (size fq) e)
