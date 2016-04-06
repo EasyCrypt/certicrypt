@@ -30,7 +30,7 @@ Fixpoint filter_map (A B:Type)
 
 Lemma UIP_bool : UIP_ bool.
 Proof.
- apply eq_dep_eq__UIP; red.
+ apply eq_dep_eq__UIP; red; unfold Eq_dep_eq_on.
  apply eq_dep_eq_dec.
  intros [ | ] [ | ]; auto.
  right; discriminate.

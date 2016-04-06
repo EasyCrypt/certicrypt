@@ -421,7 +421,7 @@ Fixpoint pow (n m:nat) {struct m} : nat :=
 Infix "^" := pow : nat_scope.
 
 Definition pow_N (n m:N) : N :=
- Nnat.N_of_nat (pow (Nnat.nat_of_N n) (Nnat.nat_of_N m)). 
+ BinNat.N_of_nat (pow (BinNat.nat_of_N n) (BinNat.nat_of_N m)). 
 
 Lemma pow_lt_0 : forall n c, 0 < n -> 0 < n ^ c.
 Proof.

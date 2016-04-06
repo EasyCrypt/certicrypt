@@ -8,7 +8,9 @@
 
 (** * PrimeLib.v : Extension to the library of Coq about integers *)
 
-Require Import CCMisc.
+Add LoadPath "." as Top.
+
+Require Import Top.CCMisc.
 Require Export Znumtheory.
 Require Import Arith Even Div2.
 Require Import Arith.Euclid.
@@ -112,7 +114,6 @@ Proof.
  apply Zdivide_opp_r_rev in H1.
  apply Hp in Hp2; trivial.
  apply Zdivide_le in Hdiv2; try omega.
- elimtype False; omega.
  apply Zdivide_trans with (Zgcd a b); trivial.
 
  assert (H0: (Zgcd a b | a)) by (case (Zgcd_is_gcd a b); auto).
@@ -131,8 +132,6 @@ Proof.
  assert (Hb := Zdivide_trans p2 (Zgcd a b) b Hdiv2 H1).
  apply Hp in Hp2; trivial.
  apply Zdivide_le in Hdiv2; try omega.
- elimtype False; omega.
-    
  elimtype False; omega.
 Qed.
 
@@ -204,7 +203,7 @@ Proof.
  trivial.
  change (S n) with (1 + n)%nat.
  unfold Zpower_nat in *.
- rewrite iter_nat_plus, IHn; trivial.
+ rewrite nat_rect_plus, IHn; trivial.
  elim H; trivial.
 Qed.
 
@@ -807,7 +806,7 @@ Qed.
 
 Lemma euclid_bound : forall a b (H:0 < b <= a),
  match euclid a b H with
- | exist (u,v,d) He => Zabs u <= Zabs b /\ Zabs v <= Zabs a
+ | exist _ (u,v,d) He => Zabs u <= Zabs b /\ Zabs v <= Zabs a
  end.
 Proof.
  intros a b H.
@@ -1047,7 +1046,6 @@ Proof.
  omega.
  trivial.
  trivial.
- ring.
  trivial.
 Qed.
 
@@ -1069,7 +1067,6 @@ Proof.
  omega.
  trivial.
  trivial.
- ring.
  trivial.
 Qed.
 
@@ -1088,7 +1085,6 @@ Proof.
  rewrite (Zodd_div2 a) at 3.
  ring_simplify.
  omega.
- trivial.
  trivial.
  trivial.
 Qed.
@@ -1237,7 +1233,7 @@ Proof.
 Qed.
 
 Lemma mult_mod : forall a b n,
- (a * b) mod n = a mod n * (b mod n) mod n.
+ (a * b) mod n = ((nmod a n) * (nmod b n)) mod n.
 Proof.
  intros.
  destruct (zerop n) as [H | H].
@@ -1249,7 +1245,7 @@ Proof.
 Qed.
 
 Lemma mult_mod_idemp_r : forall a b n, 
- (b * (a mod n)) mod n = (b * a) mod n.
+ (b * (nmod a n)) mod n = (b * a) mod n.
 Proof.
  intros; unfold nmod.
  destruct (zerop n) as [H | H].
@@ -1260,7 +1256,7 @@ Proof.
 Qed.
 
 Lemma mod_lt : forall a b,
- 0 < b ->  0 <= a mod b < b.
+ 0 < b ->  0 <= nmod a b < b.
 Proof.
  intros; unfold nmod. 
  split.
@@ -1274,7 +1270,7 @@ Proof.
 Qed.
 
 Lemma mod_mod : forall a p,
- a mod p mod p = a mod p.
+ (nmod a p) mod p = a mod p.
 Proof.
  intros; destruct (zerop p) as [H | H].
  subst; rewrite mod_0_r, mod_0_r; trivial.
@@ -1282,7 +1278,7 @@ Proof.
  apply mod_lt; trivial.
 Qed.
 
-Lemma mod_plus : forall a b n, (a + b) mod n = ((a mod n) + (b mod n)) mod n.
+Lemma mod_plus : forall a b n, (a + b) mod n = ((nmod a n) + (nmod b n)) mod n.
 Proof.
  intros; destruct (zerop n) as [Hn | Hn].
  subst; rewrite mod_0_r; rewrite mod_0_r; trivial.

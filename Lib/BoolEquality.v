@@ -230,7 +230,7 @@ Section EQ_LIST.
  Variable eq : t -> t -> Prop.
  Variable eqb : t -> t -> bool.
 
- Hypothesis eq_dec : forall x y, {eq x y} + {~ eq x y}.
+ Parameter eq_dec : forall x y, {eq x y} + {~ eq x y}.
 
  (* Inductively defined equality *)
  Inductive eq_list : list t -> list t -> Prop :=

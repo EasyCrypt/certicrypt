@@ -234,13 +234,15 @@ Section TREE.
 
 End TREE.
 
+Arguments Empty [A].
+
 Section Map.
 
     Variables (A B:Type) (defA:A) (defB:B) (Beq_def : B -> bool) (f : A -> B) .
 
     Fixpoint map (t:tree A) : tree B:=
       match t with 
-      | Empty => Empty _
+      | Empty => Empty
       | Node o tl tr => mkNode Beq_def (f o) (map tl) (map tr)
       end.
     Hypothesis Beq_def_spec : forall a, if Beq_def a then a = defB else a <> defB.
