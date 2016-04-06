@@ -30,7 +30,7 @@ Module Type VAR (UT:UTYPE) (T:TYPE UT).
 
  Definition bname (bv:bvar) : var (btype bv) :=
   match bv as bv0 return var (btype bv0) with
-  | mkV t v => v
+  | @mkV t v => v
   end.
 
  Coercion bname : bvar >-> var.
@@ -96,7 +96,7 @@ Module MakeVar (UT:UTYPE) (T:TYPE UT) <: VAR UT T.
 
  Definition bname (bv:bvar) : var (btype bv) :=
   match bv as bv0 return var (btype bv0) with
-  | mkV t v => v
+  | @mkV t v => v
   end.
 
  Definition veqb t1 t2 (x:var t1) (y:var t2) : bool :=
@@ -186,7 +186,9 @@ Module MakeVar (UT:UTYPE) (T:TYPE UT) <: VAR UT T.
 
  End VBdec.
  
- Include DecidableEqDepSet VBdec.
+ Include DecidableEqDep VBdec.
+
+ Definition inj_pair2 := inj_pairT2.
 
 End MakeVar.
 

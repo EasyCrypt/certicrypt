@@ -911,7 +911,7 @@ End LIFT_TRANS_DISCR.
  Add Parametric Morphism A B : (elift (A:=A) (B:=B))
  with signature Fimp2 (A:=A) (B:=B) --> 
   Oeq (O:=Distr (A * B)) ==> Oeq (O:=Distr A) ==> 
-  Oeq (O:=Distr B) ==> Oeq (O:=U) ==> inverse impl
+  Oeq (O:=Distr B) ==> Oeq (O:=U) ==> Basics.flip impl
  as elift_morph.
  Proof.
   unfold impl, Fimp2; intros R1 R2 H d1 d2 H0 d3 d4 H1 d5 d6 H2 ep1 ep2 H3 H4.

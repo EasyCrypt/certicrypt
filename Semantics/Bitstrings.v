@@ -8,6 +8,7 @@
 
 (** * Bitstrings.v : Bitstring type and operators *)
 
+Require Export Vector.
 Require Export Bvector.
 Require Export EqdepFacts.
 Require Export Eqdep_dec.
@@ -28,12 +29,24 @@ Fixpoint Veqb k (v1 v2:Bvector k) : bool :=
     else false
  end v1 v2.
 
+Lemma V0_eq : forall T (v : t T 0), v = Vector.nil _.
+Proof. intros T; apply case0; trivial. Qed.
+
+Lemma VSn_eq : forall T n (v : t T (S n)), v = Vector.cons T (Vector.hd v) _ (Vector.tl v).
+Proof. intros T; apply caseS; trivial. Qed.
+
+Notation Vhead  := @Vector.hd.
+Notation Vtail  := @Vector.tl.
+Notation Vnil   := @Vector.nil.
+Notation Vcons  := @Vector.cons.
+Notation vector := Vector.t.
+
 Lemma Veqb_spec : forall k (v1 v2:Bvector k),
  if Veqb v1 v2 then v1 = v2 else v1 <> v2.
 Proof.
  induction k; simpl; intros.
- rewrite (V0_eq bool v1), (V0_eq bool v2); trivial.
- rewrite (VSn_eq bool k v1); rewrite (VSn_eq bool k v2); simpl.
+ rewrite (V0_eq v1), (V0_eq v2); trivial.
+ rewrite (VSn_eq v1); rewrite (VSn_eq v2); simpl.
  case_eq (Bool.eqb (Vhead bool k v1) (Vhead bool k v2)).
  generalize (IHk (Vtail bool k v1) (Vtail bool k v2));
   destruct Veqb; intros.
@@ -91,7 +104,18 @@ Proof.
  repeat (rewrite app_length || rewrite map_length || rewrite IHk).
  fold Bvector; ring.
 Qed.
+
+Lemma Vextend : forall (T : Type) (n p:nat), t T n -> t T p -> t T (n + p).
+Proof.
+  induction n as [| n f]; intros p v v0.
+  simpl in |- *; exact v0.
+
+  inversion v as [| a n0 H0 H1].
+  simpl in |- *; exact (Vcons T a _ (f p H0 v0)).
+Defined.
   
+Arguments Vextend : clear implicits.
+
 Opaque Vextend.
 
 Lemma bs_support_sum : forall k p f,
@@ -145,7 +169,7 @@ Proof.
  induction bs.
  left; trivial.
  simpl; apply in_or_app.
- destruct a;[right | left]; rewrite in_map_iff; exists bs; auto.
+ destruct h;[right | left]; rewrite in_map_iff; exists bs; auto.
 Qed.
 
 Lemma bs_support_NoDup : forall k, NoDup (bs_support k).
@@ -222,7 +246,7 @@ Lemma Bv2N_Bvect_false : forall n, Ndigits.Bv2N _ (Bvect_false n) = N0.
 Proof.
  induction n; simpl; trivial.
  unfold Bvect_false in IHn.
- rewrite IHn; trivial.
+ unfold Bvect_false; rewrite IHn; trivial.
 Qed.
 
 Lemma BVxor_nilpotent : forall n v, BVxor n v v = Bvect_false n.
@@ -303,8 +327,8 @@ Lemma Vextend_inj : forall n p (v1 v2 : vector bool n) (w1 w2 : vector bool p),
  v1 = v2 /\ w1 = w2.
 Proof.
  induction n; intros p v1 v2 w1 w2.
- rewrite (V0_eq bool v1), (V0_eq bool v2); simpl; auto.
- rewrite (VSn_eq bool n v1), (VSn_eq bool n v2); simpl; intros.
+ rewrite (V0_eq v1), (V0_eq v2); simpl; auto.
+ rewrite (VSn_eq v1), (VSn_eq v2); simpl; intros.
  injection H; clear H; intros.
  rewrite H0.
  destruct (IHn p (Vtail bool n v1)(Vtail bool n v2) w1 w2).

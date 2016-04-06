@@ -9,7 +9,7 @@
 (** * UpToBad.v : Fundamental lemma of game-playing *)
 
 Set Implicit Arguments.
-
+Set Asymmetric Patterns.
 
 Require Export Inlining.
 

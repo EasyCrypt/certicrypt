@@ -10,6 +10,7 @@
    invariants *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export While_loop.
 Require Export EqTh.

@@ -11,6 +11,8 @@
 
 Require Export Alloc.
 
+Set Asymmetric Patterns.
+
 Module Make (SemO:SEM_OPT).
 
  Module Al := Alloc.Make SemO.

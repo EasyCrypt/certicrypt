@@ -1,7 +1,57 @@
--I Lib 
--I Semantics 
--I ALEA
-ALEA
-Lib
-Semantics
-Examples
+-o Makefile
+-R ALEA CC
+-R Lib CC
+-R Semantics CC
+ALEA/Ccpo.v
+ALEA/Choice.v
+ALEA/Cover.v
+ALEA/Misc.v
+ALEA/Monads.v
+ALEA/Probas.v
+ALEA/Prog.v
+ALEA/Sets.v
+ALEA/Uprop.v
+ALEA/Utheory.v
+Lib/CCMisc.v
+Lib/BoolEquality.v
+Lib/While_loop.v
+Lib/SetInterface.v
+Lib/Tree.v
+Lib/FilterMap.v
+Lib/LtIrrelevance.v
+Lib/PrimeLib.v
+Semantics/BaseDef.v
+Semantics/Dlist.v
+Semantics/Types.v
+Semantics/Variables.v
+Semantics/Operators.v
+Semantics/Memory.v
+Semantics/Expressions.v
+Semantics/Instructions.v
+Semantics/SemInstr.v
+Semantics/MakeSem.v
+Semantics/BaseProp.v
+Semantics/SemTheory.v
+Semantics/NotModifyDec.v
+Semantics/EqTh.v
+Semantics/EqThInv.v
+Semantics/GenOpt.v
+Semantics/Alloc.v
+Semantics/Inlining.v
+Semantics/Adversary.v
+Semantics/Fundamental.v
+Semantics/BuildGame.v
+Semantics/LazySampling.v
+Semantics/LazySampling2.v
+Semantics/EqObsRelDec.v
+Semantics/PrBad.v
+Semantics/Triples.v
+Semantics/PPT.v
+Semantics/SD.v
+Semantics/eLift.v
+Semantics/SD_Others.v
+Semantics/SD_Hoare.v
+Semantics/BuildTac.v
+Semantics/BuildTac2.v
+Semantics/Group.v
+Semantics/Bitstrings.v

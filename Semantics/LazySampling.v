@@ -8,6 +8,8 @@
 
 (** * LazySampling.v : Derandomization *)
 
+Set Asymmetric Patterns.
+
 Require Export BuildGame.
 
 

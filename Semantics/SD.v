@@ -7,6 +7,7 @@
  * -------------------------------------------------------------------- *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export BoolEquality.
 Require Export CCMisc.  
@@ -223,7 +224,7 @@ Section SamePoints.
 
  Add Parametric Morphism (A:Type) : (@RSD A) 
    with signature (@inclusion _) ==> (@Oeq (Distr A)) ==> (@Oeq (Distr A))
-    ==> (@Ole (tcpo U)) --> inverse impl as RSD_impl_le_compat_mor.
+    ==> (@Ole (tcpo U)) --> Basics.flip impl as RSD_impl_le_compat_mor.
  Proof.
   intros R R' HR d1 d3 H31 d2 d4 H24 ep ep' Hep H.
   apply RSD_eq_distr_compat with (1:=H31) (2:=H24).
@@ -233,7 +234,7 @@ Section SamePoints.
 
  Add Parametric Morphism (A:Type) : (@RSD A) 
    with signature (@same_relation _) ==> (@Oeq (Distr A)) ==> (@Oeq (Distr A))
-    ==> (@Oeq (tcpo U)) ==> inverse impl as RSD_eq_compat_mor.
+    ==> (@Oeq (tcpo U)) ==> Basics.flip impl as RSD_eq_compat_mor.
  Proof.
   intros R R' [HR _] d1 d3 H31 d2 d4 H24 ep ep' [_ Hep] H.
   apply RSD_eq_distr_compat with (1:=H31) (2:=H24).
@@ -361,7 +362,7 @@ Hint Unfold symmetric reflexive inclusion.
  Qed.
 
  Add Parametric Morphism (A:Type) : (@GSD A) 
-   with signature (@Oeq (Distr A)) ==> (@Oeq (Distr A)) ==> (@Ole (tcpo U)) --> inverse impl 
+   with signature (@Oeq (Distr A)) ==> (@Oeq (Distr A)) ==> (@Ole (tcpo U)) --> Basics.flip impl 
  as GSD_le_eq_compat_mor.
  Proof.
   intros  d3 d1 H31 d4 d2 H24 ep' ep Hep H.

@@ -9,6 +9,7 @@
 (** * PPT.v: Theory of probabilistic polynomial time programs *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Import BaseProp.
 
@@ -675,7 +676,7 @@ Module Make_PPT (Sem:SEM) (ST:SEM_THEORY Sem) (U:UPPT Sem ST).
   apply le_trans with (1:= List_size_le l  (nth x l (T.default k t1)) i).
   apply le_trans with (1:= H2); apply le_plus_l.
   apply le_trans with (peval (T.default_poly t1) k).
-  unfold T.interp; rewrite e; apply T.default_poly_spec.
+  rewrite e; apply T.default_poly_spec.
   apply le_plus_r.
   apply plus_le_compat.
   apply le_trans with (1 := List_size_length l); trivial.
@@ -915,8 +916,6 @@ Module Make_PPT (Sem:SEM) (ST:SEM_THEORY Sem) (U:UPPT Sem ST).
   split.
   apply Z_div_pos; auto with zarith.
   apply Zdiv_le_upper_bound; auto with zarith.
-  apply Zgt_lt.
-  apply Zgt_pos_0.
   apply Zle_trans with ((Zpos p1) * 1)%Z.
   auto with zarith.
   apply Zmult_le_compat; auto with zarith.
@@ -1227,6 +1226,7 @@ Qed.
 
   generalize (lt_eq_lt_dec (nat_of_P p) (nat_of_P p0)); intro Helim; elim Helim;
      [ intro Helim'; elim Helim';clear Helim' | ]; intro H; clear Helim.
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
   rewrite (nat_of_P_lt_Lt_compare_complement_morphism p p0 H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p0).
@@ -1236,11 +1236,13 @@ Qed.
   change (nat_of_P p < nat_of_P p0); trivial.
  
   assert (Heq := nat_of_P_inj p p0 H);subst.
+  rewrite Z.pos_sub_spec.
   rewrite Pcompare_refl; simpl; trivial.
   rewrite <- nat_of_P_plus_morphism; trivial.
   apply lt_le_weak.
   apply lt_O_nat_of_P.
 
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
   rewrite (nat_of_P_gt_Gt_compare_complement_morphism p p0 H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p).
@@ -1251,7 +1253,8 @@ Qed.
 
    generalize (lt_eq_lt_dec (nat_of_P p) (nat_of_P p0)); intro Helim; elim Helim;
      [ intro Helim'; elim Helim';clear Helim' | ]; intro H; clear Helim.
-    rewrite (nat_of_P_lt_Lt_compare_complement_morphism p p0 H); simpl.
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
+  rewrite (nat_of_P_gt_Gt_compare_complement_morphism p0 p H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p0).
   apply le_minus.
@@ -1260,12 +1263,13 @@ Qed.
   change (nat_of_P p < nat_of_P p0); trivial.
 
   assert (Heq := nat_of_P_inj p p0 H);subst.
-  rewrite Pcompare_refl; simpl; trivial.
+  rewrite Z.pos_sub_spec, Pcompare_refl; simpl; trivial.
   rewrite <- nat_of_P_plus_morphism; trivial.
   apply lt_le_weak.
   apply lt_O_nat_of_P.
 
-  rewrite (nat_of_P_gt_Gt_compare_complement_morphism p p0 H); simpl.
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
+  rewrite (nat_of_P_lt_Lt_compare_complement_morphism p0 p H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p).
   apply le_minus.
@@ -1284,6 +1288,7 @@ Qed.
 
   generalize (lt_eq_lt_dec (nat_of_P p) (nat_of_P p0)); intro Helim; elim Helim;
      [ intro Helim'; elim Helim';clear Helim' | ]; intro H; clear Helim.
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
   rewrite (nat_of_P_lt_Lt_compare_complement_morphism p p0 H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p0).
@@ -1293,11 +1298,12 @@ Qed.
   change (nat_of_P p < nat_of_P p0); trivial.
  
   assert (Heq := nat_of_P_inj p p0 H);subst.
-  rewrite Pcompare_refl; simpl; trivial.
+  rewrite Z.pos_sub_spec, Pcompare_refl; simpl; trivial.
   rewrite <- nat_of_P_plus_morphism; trivial.
   apply lt_le_weak.
   apply lt_O_nat_of_P.
 
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
   rewrite (nat_of_P_gt_Gt_compare_complement_morphism p p0 H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p).
@@ -1311,7 +1317,9 @@ Qed.
 
    generalize (lt_eq_lt_dec (nat_of_P p) (nat_of_P p0)); intro Helim; elim Helim;
      [ intro Helim'; elim Helim';clear Helim' | ]; intro H; clear Helim.
-    rewrite (nat_of_P_lt_Lt_compare_complement_morphism p p0 H); simpl.
+
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
+  rewrite (nat_of_P_gt_Gt_compare_complement_morphism p0 p H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p0).
   apply le_minus.
@@ -1320,12 +1328,13 @@ Qed.
   change (nat_of_P p < nat_of_P p0); trivial.
 
   assert (Heq := nat_of_P_inj p p0 H);subst.
-  rewrite Pcompare_refl; simpl; trivial.
+  rewrite Z.pos_sub_spec, Pcompare_refl; simpl; trivial.
   rewrite <- nat_of_P_plus_morphism; trivial.
   apply lt_le_weak.
   apply lt_O_nat_of_P.
 
-  rewrite (nat_of_P_gt_Gt_compare_complement_morphism p p0 H); simpl.
+  rewrite Z.pos_sub_spec; unfold Pos.compare.
+  rewrite (nat_of_P_lt_Lt_compare_complement_morphism p0 p H); simpl.
   rewrite nat_of_P_minus_morphism.
   apply le_trans with (nat_of_P p).
   apply le_minus.
@@ -3120,13 +3129,13 @@ Qed.
     exists (fun _ => 0).
     exists (fun _ => 0).
     intros k m p Hm.
-    unfold bound; rewrite (surjective_pairing (cinit_mem E f (dnil _) m)).
+    unfold bound; rewrite (surjective_pairing (cinit_mem E f (dnil) m)).
     rewrite cinit_mem_spec_l, cinit_mem_spec_r; split; [ | apply le_O_n].
     simpl.
     intros t Ht x.
-    generalize (lookup_init_mem E f (dnil _) m x).
-    generalize (get_arg_Some2 x (proc_params E f) (dnil _)).
-    simpl (Proc.targs f); case (get_arg x (lt1:=nil) (proc_params E f) (dnil E.expr)).
+    generalize (lookup_init_mem E f (dnil) m x).
+    generalize (get_arg_Some2 x (proc_params E f) (dnil)).
+    simpl (Proc.targs f); case (get_arg x (lt1:=nil) (proc_params E f) (@dnil _ E.expr)).
     intros e V W; rewrite W; clear W.
     elim (V e); trivial.
 

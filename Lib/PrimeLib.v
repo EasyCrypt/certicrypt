@@ -8,9 +8,7 @@
 
 (** * PrimeLib.v : Extension to the library of Coq about integers *)
 
-Add LoadPath "." as Top.
-
-Require Import Top.CCMisc.
+Require Import CCMisc.
 Require Export Znumtheory.
 Require Import Arith Even Div2.
 Require Import Arith.Euclid.

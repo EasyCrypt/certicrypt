@@ -8,6 +8,8 @@
 
 (** * LazySampling2.v : A logic for swapping statements *)
 
+Set Asymmetric Patterns.
+
 Require Export LazySampling.
 
 

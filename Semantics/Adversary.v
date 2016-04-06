@@ -1520,8 +1520,8 @@ Module Make (SemO:SEM_OPT).
     Definition impp (P1 P2:mem_pred) k (m:Mem.t k) := P1 k m -> P2 k m.
     Definition eqp (P1 P2:mem_pred) k (m:Mem.t k) := P1 k m <-> P2 k m.
     Definition notp (P:mem_pred) k (m:Mem.t k) := ~ P k m.
-    Definition falsep:mem_pred := fun k (m:Mem.t k), False.
-    Definition truep:mem_pred := fun k (m:Mem.t k), True.
+    Definition falsep:mem_pred := fun k (m:Mem.t k) => False.
+    Definition truep:mem_pred := fun k (m:Mem.t k) => True.
     Definition EPp (e:E.expr T.Bool) k (m:Mem.t k) := is_true (E.eval_expr e m).
 
     Definition upd_pred 

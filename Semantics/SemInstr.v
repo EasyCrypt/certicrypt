@@ -10,8 +10,8 @@
 
 Require Import List.
 
-
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export Instructions.
 Require Export Relations.
@@ -1204,8 +1204,6 @@ Module Make (UT:UTYPE) (T:TYPE UT) (Var:VAR UT T) (Proc:PROC UT T)
     mu (Mlet (step s) (fun s' => step_trans s' n )) f.
    Proof.
     induction n; intros; simpl; trivial.
-    apply step_stable_eq; trivial.
-    simpl; apply ford_eq_intro; trivial.
     refine (IHn _ _).
    Qed.
 
@@ -1263,7 +1261,6 @@ Module Make (UT:UTYPE) (T:TYPE UT) (Var:VAR UT T) (Proc:PROC UT T)
    Proof with trivial.
     induction n; intros; simpl.
     apply step_stable_eq ...
-    simpl; apply ford_eq_intro...
     simpl in IHn; rewrite IHn...
    Qed.
    
@@ -2513,10 +2510,10 @@ Module Make (UT:UTYPE) (T:TYPE UT) (Var:VAR UT T) (Proc:PROC UT T)
     trivial.
     apply Mlet_eq_compat.
     symmetry; apply deno_cond.
-    trivial.
+    apply Oeq_refl.
     apply Mlet_eq_compat.
     symmetry; apply deno_cond.
-    trivial.
+    apply Oeq_refl.
    
     unfold negP; rewrite <- (He H).
     case_eq (E.eval_expr e1 m1); intros.

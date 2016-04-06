@@ -13,7 +13,7 @@ Require Import SetInterface.
 Require Export EqThInv.
 
 Set Implicit Arguments.
-
+Set Asymmetric Patterns.
 
 Module Type SEM_OPT.
 
@@ -992,11 +992,11 @@ Module Make (SemO:SEM_OPT).
   | None => Esnd e
   end.
 
- Notation "'Einl' e" := (E.Eop (O.Oinl _ _) (dcons _ e (dnil _))) (at level 30).
- Notation "'Einr' e" := (E.Eop (O.Oinr _ _) (dcons _ e (dnil _))) (at level 30).
- Notation "'Eisl' s" := (E.Eop (O.Oisl _ _) (dcons _ s (dnil _))) (at level 30).
- Notation "'Eprojl' s" := (E.Eop (O.Oprojl _ _) (dcons _ s (dnil _))) (at level 30).
- Notation "'Eprojr' s" := (E.Eop (O.Oprojr _ _) (dcons _ s (dnil _))) (at level 30).
+ Notation "'Einl' e" := (E.Eop (O.Oinl _ _) (dcons _ e (dnil))) (at level 30).
+ Notation "'Einr' e" := (E.Eop (O.Oinr _ _) (dcons _ e (dnil))) (at level 30).
+ Notation "'Eisl' s" := (E.Eop (O.Oisl _ _) (dcons _ s (dnil))) (at level 30).
+ Notation "'Eprojl' s" := (E.Eop (O.Oprojl _ _) (dcons _ s (dnil))) (at level 30).
+ Notation "'Eprojr' s" := (E.Eop (O.Oprojr _ _) (dcons _ s (dnil))) (at level 30).
  
 
  Definition build_isl t1 t2 (e:E.expr (T.Sum t1 t2)) : E.expr T.Bool :=
@@ -2992,7 +2992,7 @@ Module Make (SemO:SEM_OPT).
    destruct op; try (eapply get_eq_op_spec; eauto; fail).
    T.dlist_inversion args; subst.
    unfold O.eval_op in H0; simpl in *.
-   eapply IHe; eauto.
+   eapply IHe; eauto 3.
    rewrite <- (T.eq_dep_eq H0).
    destruct (E.eval_expr x m); constructor.
    elim H.
@@ -3153,7 +3153,7 @@ Module Make (SemO:SEM_OPT).
   equiv (req_mem_rel I P /-\ ~-EP1 e /-\ ~-EP2 e) E1 c1f E2 c2f Q ->
   equiv (req_mem_rel I P) E1 c1 E2 c2 Q.
  Proof.
-  intros; eapply cp_test_correct; eauto.
+  intros; eapply cp_test_correct; eauto 3.
   intros k m1 m2 (w1,w2); apply EqObs_e_fv_expr.
   apply req_mem_weaken with (2:= w1); trivial.
  Qed.

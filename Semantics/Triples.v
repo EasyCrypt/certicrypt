@@ -9,6 +9,7 @@
 Require Export EqObsRelDec.
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 
 Module Make (SemO:SEM_OPT).

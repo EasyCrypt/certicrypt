@@ -10,7 +10,7 @@
  e.g. dead code, code movement, semantic equivalence *)
 
 Set Implicit Arguments.
-
+Set Asymmetric Patterns.
 
 Require Export While_loop.
 Require Export NotModifyDec.
@@ -816,8 +816,6 @@ Module Make (Sem:SEM).
    intros; intro k.
    exists (fun m1 m2 => Mlet ([[c1++c2]] E m1) (fun m => Munit (m,m))).
    unfold Meq; intros; subst; constructor; simpl; intros; trivial.
-   apply (mu_stable_eq (([[c1 ++ c2]]) E m2)).
-   simpl; apply ford_eq_intro; trivial.
    rewrite (swap_comm H H0 H1 H2 H5 H4 H3 m2).
    apply (mu_stable_eq (([[c2 ++ c1]]) E m2)).
    simpl; apply ford_eq_intro; trivial. 

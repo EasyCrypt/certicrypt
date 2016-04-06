@@ -10,6 +10,7 @@
   general theory of program equivalence *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export BaseProp.
 
@@ -65,7 +66,7 @@ Module Make (Sem:SEM).
 
  Add Morphism equiv 
   with signature implMR ++> (@eq env) ==> (@eq cmd) ==> 
-   (@eq env) ==> (@eq cmd) ==> implMR --> inverse impl
+   (@eq env) ==> (@eq cmd) ==> implMR --> Basics.flip impl
   as equiv_imp_Morph.
  Proof.
   unfold flip, implMR, impl; intros P P' H ? ? ? ? Q Q' ? ?.

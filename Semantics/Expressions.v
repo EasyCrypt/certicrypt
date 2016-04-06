@@ -10,6 +10,7 @@
 
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export Operators.
 Require Export Memory.
@@ -148,7 +149,7 @@ Module Type EXPR (UT:UTYPE) (T:TYPE UT)
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eexists v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eforall v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Efind v e1 e2)) ->
-  (Pl nil (dnil expr)) ->
+  (Pl nil (@dnil _ expr)) ->
   (forall t l e le, P t e -> Pl l le -> Pl (t::l) (dcons t e le)) ->
   forall t e, P t e.
 
@@ -160,7 +161,7 @@ Module Type EXPR (UT:UTYPE) (T:TYPE UT)
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eexists v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eforall v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Efind v e1 e2)) ->
-  (Pl nil (dnil expr)) ->
+  (Pl nil (@dnil _ expr)) ->
   (forall t l e le, P t e -> Pl l le -> Pl (t::l) (dcons t e le)) ->
   (forall t e, P t e) /\ (forall lt args, Pl lt args).
  
@@ -391,7 +392,7 @@ Module MakeExpr (UT:UTYPE) (T:TYPE UT)
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eexists v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eforall v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Efind v e1 e2)) ->
-  (Pl nil (dnil expr)) ->
+  (Pl nil (@dnil _ expr)) ->
   (forall t l e le, P t e -> Pl l le -> Pl (t::l) (dcons t e le)) ->
   forall t e, P t e.
  Proof.
@@ -418,7 +419,7 @@ Module MakeExpr (UT:UTYPE) (T:TYPE UT)
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eexists v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Eforall v e1 e2)) ->
   (forall t (v:Var.var t) e1 e2, P _ e1 -> P _ e2 -> P _ (Efind v e1 e2)) ->
-  (Pl nil (dnil expr)) ->
+  (Pl nil (@dnil _ expr)) ->
   (forall t l e le, P t e -> Pl l le -> Pl (t::l) (dcons t e le)) ->
   (forall t e, P t e) /\ (forall lt args, Pl lt args).
  Proof.
@@ -868,7 +869,7 @@ Module MakeExpr (UT:UTYPE) (T:TYPE UT)
 
  End UOdec.
  
- Module UopD := DecidableEqDepSet UOdec.
+ Module UopD := DecidableEqDep UOdec.
 
  Lemma get_uop_spec : forall t (e:expr t) op args, 
   get_uop e = Some (existT _ op args) -> 
@@ -877,7 +878,7 @@ Module MakeExpr (UT:UTYPE) (T:TYPE UT)
   destruct e; simpl; try (intros; discriminate). 
   destruct op; simpl; intros; try discriminate.
   injection H; clear H; intros; subst.
-  rewrite (UopD.inj_pair2 (fun x => args (Uop.targs x)) op d args0 H); trivial.
+  rewrite (UopD.inj_pairT2 (fun x => args (Uop.targs x)) op d args0 H); trivial.
  Qed.
 
 End MakeExpr.

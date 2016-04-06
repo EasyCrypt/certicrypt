@@ -9,6 +9,7 @@
 (** * BaseProp.v : Basic properties of programs and expressions *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export RelationClasses.
 Require Tree.
@@ -337,7 +338,7 @@ Module Make (S:SEM). (* <: SEM_THEORY S. *)
       (tg, Tree.upd nil eq_def tl x (fun l => mkE a ::remove_t tx l))
     end.
    
-   Definition empty : t := (Tree.Empty _, Tree.Empty _). 
+   Definition empty : t := (Tree.Empty, Tree.Empty). 
 
    Lemma get_upd_same : forall m t (x:Var.var t) a, get (upd m x a) x = Some a.
    Proof.
@@ -1045,7 +1046,7 @@ Module Make (S:SEM). (* <: SEM_THEORY S. *)
  Qed.
 
  Add Parametric Morphism (k:nat) : (req_mem (k:=k)) 
-  with signature Vset.subset ==> (@Meq k) ==> (@Meq k) ==> inverse impl 
+  with signature Vset.subset ==> (@Meq k) ==> (@Meq k) ==> Basics.flip impl 
   as req_mem_weaken_morph.
  Proof.
   unfold flip; red; intros.

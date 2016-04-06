@@ -14,7 +14,6 @@ Require Export BaseDef.
 Require Export Dlist.
 Require Export CCMisc.
 
-
 Open Scope nat_scope.
 
 (** Polynomials *)
@@ -257,33 +256,41 @@ Fixpoint log_sup (p:positive) : nat :=
  | xI q => S (S (log_inf q))
  end.
 
+Lemma Pcompare_not_Eq (p q : positive) :
+    Pos.compare_cont Gt p q <> Eq
+  /\ Pos.compare_cont Lt p q <> Eq.
+Proof.
+induction p; destruct q; simpl; try (split; discriminate); auto.
+  assert (H := IHp q); case H; intros; split; trivial.
+  assert (H := IHp q); case H; intros; split; trivial.
+Qed.
+
 Lemma log_inf_monotonic : forall (p q:positive), (p <= q)%positive ->
  log_inf p <= log_inf q.
 Proof.
  unfold Ple; induction p; destruct q; simpl; intros; auto using le_n_S with arith.
  apply le_n_S; apply IHp; intro; apply H.
- case_eq ((p ?= q)%positive Gt); intros; trivial.
+ case_eq (Pos.compare_cont Gt p q); intros; trivial.
  destruct (Pcompare_not_Eq p q).
  elim (H2 H1).
- apply Pcompare_Gt_Lt in H1; rewrite H1 in H0; trivial.
+ apply Pcompare_Gt_Lt in H1. rewrite H1 in H0; discriminate.
  elim H; trivial.
  apply le_n_S; apply IHp; intro; apply H.
- rewrite <- Pcompare_eq_Gt; trivial.
+ rewrite Pos.compare_xO_xI, H0; trivial.
  elim H; trivial.
 Qed.
 
 Lemma log_sup_inf_monotonic :forall p q, 
- (p ?= q)%positive Eq = Lt ->
+ Pos.compare_cont Eq p q = Lt ->
  S (log_inf p) <= log_sup q.
 Proof.
  induction p; destruct q; simpl; intros H; try discriminate H; auto with arith.
- apply le_n_S; apply le_n_S; apply log_inf_monotonic; unfold Ple; rewrite H; intro; discriminate.
- apply le_n_S; apply IHp.
- rewrite Pcompare_eq_Lt; trivial.
  apply le_n_S; apply le_n_S; apply log_inf_monotonic; unfold Ple.
- apply Pcompare_Lt_Lt in H; destruct H.
- rewrite H; intro; discriminate.
- rewrite H, Pcompare_refl; intro; discriminate.
+ unfold Pos.compare; rewrite H; discriminate.
+ apply le_n_S; apply IHp.
+ rewrite Pos.compare_lt_iff, <- Pos.compare_cont_Gt_Lt; trivial.
+ apply le_n_S; apply le_n_S; apply log_inf_monotonic; unfold Ple.
+ apply Pos.compare_cont_Lt_Lt in H; trivial.
 Qed.
 
 Lemma log_inf_le_log_sup : forall p, log_inf p <= log_sup p.
@@ -299,20 +306,10 @@ Qed.
 Lemma log_sup_monotonic : forall (p q:positive), (p <= q)%positive ->
  log_sup p <= log_sup q.
 Proof.
- unfold Ple; induction p; destruct q; simpl; intros; 
-  auto using le_n_S, log_inf_monotonic with arith.
- apply le_n_S.
- case_eq ((p ?= q)%positive Gt); intros Heq; rewrite Heq in H.
- destruct (Pcompare_not_Eq p q).
- elim (H0 Heq).
- rewrite <- Pcompare_eq_Lt in Heq.
- apply log_sup_inf_monotonic; trivial.
- elim H; trivial.
- elim H; trivial.
- apply le_n_S.
- apply le_trans with (2:= log_sup_le_Slog_inf q); auto with arith.
- apply IHp; intro; apply H; rewrite <- Pcompare_eq_Gt; trivial.
- elim H; trivial.
+intros p q le_pq; apply Pos.lt_eq_cases in le_pq; destruct le_pq.
+  apply (@le_trans _ _ _ (log_sup_le_Slog_inf p)).
+  apply log_sup_inf_monotonic; trivial.
+rewrite H; apply le_refl.
 Qed.
 
 Definition size_nat (n:nat) : nat := 
@@ -320,6 +317,10 @@ Definition size_nat (n:nat) : nat :=
  | O => S O
  | _ => log_sup (P_of_succ_nat n)
  end.
+
+Lemma ZL3 n:
+  Psucc (P_of_succ_nat (n + n)) = ((P_of_succ_nat n)~0)%positive.
+Proof.  (*FIX STRUB*) Admitted.
 
 Lemma size_nat_double : forall n, 
  0 < n -> size_nat (2 * n) = S (size_nat n).
@@ -410,8 +411,8 @@ Proof.
  destruct IHn; split.
  unfold Ple in *; simpl; intro; apply H.
  apply Pcompare_Lt_Gt; trivial.
- change ((n ?= (Ppow2 (log_inf n~1)))%positive Gt = Lt).
- rewrite <- Pcompare_eq_Lt; exact H0.
+ change (Pos.compare_cont Gt n (Ppow2 (log_inf n~1)) = Lt).
+ rewrite Pos.compare_cont_Gt_Lt; exact H0.
  exact IHn.
  unfold Ple, Plt; simpl; split;[discriminate | trivial].
 Qed.
@@ -772,7 +773,7 @@ Module Type TYPE (UT:UTYPE).
    (args:dlist interp dom) {struct args} : interp codom :=
    match args in (dlist _ dom0) return type_op dom0 codom -> interp codom with
    | dnil => fun (op:interp codom) => op
-   | dcons t1 dom v args =>
+   | @dcons _ _ t1 dom v args =>
      fun (op:type_op (t1::dom) codom) => app_op codom (op v) args
    end op.
 
@@ -780,7 +781,7 @@ Module Type TYPE (UT:UTYPE).
    (args:dlist interp dom) {struct args} : interp codom * nat :=
    match args in (dlist _ dom0) return ctype_op dom0 codom -> interp codom * nat with
    | dnil => fun (op:interp codom * nat) => op
-   | dcons t1 dom v args =>
+   | @dcons _ _ t1 dom v args =>
      fun (op:ctype_op (t1::dom) codom) => capp_op codom (op v) args
    end op.
 
@@ -879,7 +880,6 @@ Module Type TYPE (UT:UTYPE).
    unfold l' in Heq; clear l'.
 
 End TYPE.
-
 
 Module MakeType (UT:UTYPE) <: TYPE UT.
 
@@ -1037,7 +1037,7 @@ Module MakeType (UT:UTYPE) <: TYPE UT.
    (args:dlist interp dom) {struct args} : interp codom :=
    match args in (dlist _ dom0) return type_op dom0 codom -> interp codom with
    | dnil => fun (op:interp codom) => op
-   | dcons t1 dom v args =>
+   | @dcons _ _ t1 dom v args =>
      fun (op:type_op (t1::dom) codom) => app_op codom (op v) args
    end op.
 
@@ -1045,7 +1045,7 @@ Module MakeType (UT:UTYPE) <: TYPE UT.
    (args:dlist interp dom) {struct args} : interp codom * nat :=
    match args in (dlist _ dom0) return ctype_op dom0 codom -> interp codom * nat with
    | dnil => fun (op:interp codom * nat) => op
-   | dcons t1 dom v args =>
+   | @dcons _ _ t1 dom v args =>
      fun (op:ctype_op (t1::dom) codom) => capp_op codom (op v) args
    end op.
 
@@ -1202,11 +1202,11 @@ Module MakeType (UT:UTYPE) <: TYPE UT.
   Proof.
    intros t1 t2; generalize (eqb_spec t1 t2); destruct (eqb t1 t2); auto.
   Qed.
-
  End Tdec.
 
- Include DecidableEqDepSet Tdec.
- 
+ Include DecidableEqDep Tdec.
+
+ Definition inj_pair2 := inj_pairT2.
 
  Module LTdec <: DecidableType.
 
@@ -1220,15 +1220,15 @@ Module MakeType (UT:UTYPE) <: TYPE UT.
 
  End LTdec.
  
- Module LTeqdep := DecidableEqDepSet LTdec.
+ Module LTeqdep := DecidableEqDep LTdec.
 
  Lemma l_eq_dep_eq : forall (P : list type -> Type) (p : list type) (x y : P p),
   eq_dep (list type) P p x p y -> x = y.
  Proof LTeqdep.eq_dep_eq.
- 
+
  Lemma l_inj_pair2 : forall (P : list type -> Type) (p : list type) (x y : P p),
   existT P p x = existT P p y -> x = y.
- Proof LTeqdep.inj_pair2.
+ Proof LTeqdep.inj_pairT2.
  
  Lemma l_UIP_refl : forall (x : list type) (p : x = x), p = refl_equal x.
  Proof LTeqdep.UIP_refl.

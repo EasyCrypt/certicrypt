@@ -1070,6 +1070,8 @@ Module MakeOp (UT:UTYPE) (T:TYPE UT) (Uop : UOP UT T) <: OP UT T Uop.
 
  End Odec.
  
- Include DecidableEqDepSet Odec.
+ Include DecidableEqDep Odec.
+
+ Definition inj_pair2 := inj_pairT2.
 
 End MakeOp.

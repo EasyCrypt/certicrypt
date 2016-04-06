@@ -57,7 +57,7 @@ Section DLIST.
   Fixpoint DIn (l:list A) (dl:dlist l) {struct dl}: Prop :=
    match dl with 
    | dnil => False
-   | dcons a' l y dl => eq_dep A P a x a' y \/ DIn dl
+   | @dcons a' l y dl => eq_dep A P a x a' y \/ DIn dl
    end.
 
  End DIN.
@@ -68,7 +68,7 @@ Section DLIST.
  Fixpoint dforallb (l:list A) (dl:dlist l) : bool := 
   match dl with 
   | dnil => true
-  | dcons a l pa dl => if f pa then dforallb dl else false
+  | @dcons a l pa dl => if f pa then dforallb dl else false
   end.
 
  Lemma dforallb_forall: forall (l : list A) (dl:dlist l),
@@ -88,6 +88,8 @@ Section DLIST.
 
 End DLIST.
 
+Arguments dnil  [A P].
+Arguments dcons [A P] a [l] _ _.
 
 Section DMAP.
 
@@ -95,12 +97,11 @@ Section DMAP.
 
  Fixpoint dmap (l:list A) (dl: dlist P1 l) {struct dl} : dlist P2 l :=  
   match dl as t0 in (dlist _ l0) return (dlist P2 l0) with
-  | dnil => dnil P2
-  | dcons a l pa dl  => dcons a (f pa) (dmap dl)
+  | dnil => dnil
+  | dcons a pa dl  => dcons a (f pa) (dmap dl)
   end.
 
 End DMAP.
-
 
 Section DFORALL2.
 
@@ -112,7 +113,7 @@ Section DFORALL2.
   (lb:list B) (dlb : dlist PB lb) {struct dla} : bool :=
   match dla, dlb with
   | dnil, dnil => true
-  | dcons a la pa dla, dcons b lb pb dlb =>
+  | dcons a pa dla, dcons b pb dlb =>
      if f pa pb then dforall2 dla dlb
      else false
   | _, _ => false
@@ -128,7 +129,7 @@ Section DFOLD_RIGHT.
  Fixpoint dfold_right (l:list B) (dlb : dlist P l) {struct dlb} : A :=
   match dlb with
   | dnil => a0
-  | dcons b l pb dlb => f pb (dfold_right dlb)
+  | dcons b pb dlb => f pb (dfold_right dlb)
   end.
 
 End DFOLD_RIGHT.
@@ -142,7 +143,7 @@ Section DFOLD_LEFT.
  Fixpoint dfold_left (l:list B) (dlb : dlist P l) (a0:A) {struct dlb} : A :=
   match dlb with
   | dnil => a0
-  | dcons b l pb dlb => dfold_left dlb (f a0 pb)
+  | dcons b pb dlb => dfold_left dlb (f a0 pb)
   end.
 
 End DFOLD_LEFT.
@@ -152,16 +153,15 @@ Module MakeDep (EB:EQBOOL_LEIBNIZ).
 
  Module Dec.
 
-  Definition U := EB.t. 
+  Definition U := EB.t.
 
   Lemma eq_dec : forall (t1 t2:EB.t), {t1 = t2} + {t1 <> t2}.
   Proof.
    intros t1 t2; generalize (EB.eqb_spec t1 t2); destruct (EB.eqb t1 t2); auto.
   Qed.
-
  End Dec.
  
- Module Dep := DecidableEqDepSet Dec.
+ Module Dep := DecidableEqDep Dec.
 
  Module LDec.
 
@@ -180,6 +180,6 @@ Module MakeDep (EB:EQBOOL_LEIBNIZ).
 
  End LDec.
 
- Module LDep := DecidableEqDepSet Dec.
+ Module LDep := DecidableEqDep Dec.
 
 End MakeDep.
