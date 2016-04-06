@@ -1,4 +1,4 @@
 -o Makefile
--I ../../ALEA -I ../../Lib -I ../../Semantics
+-R ../../ALEA CC -R ../../Lib CC -R ../../Semantics CC -R . CC
 FDHsem.v
 FDH.v

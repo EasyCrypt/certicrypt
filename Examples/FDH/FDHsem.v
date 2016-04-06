@@ -9,6 +9,7 @@
 (** * FDHsem.v : Semantics with bitstrings, a trapdoor permutation and its inverse *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Export PPT.
 Require Export BuildTac.
@@ -95,7 +96,7 @@ Module US <: USUPPORT UT T.
   | Usupport => (bs_support k, S O)
   end.
 
- Lemma eval_usupport_nil : forall k t (s:usupport t), eval k s <> nil.
+ Lemma eval_usupport_nil : forall k t (s:usupport t), eval k s <> List.nil.
  Proof.
   intros; case s; exact (@bs_support_not_nil k).
  Qed.
@@ -141,7 +142,7 @@ Module Type TRAPDOOR_PERM.
  Parameter cost_f : polynomial.
  Parameter cost_finv : nat -> nat.
 
- Parameter f_perm :  forall k, PermutP (@eq _) (bs_support k) (map (@ap_f k) (bs_support k)).
+ Parameter f_perm :  forall k, PermutP (@eq _) (bs_support k) (List.map (@ap_f k) (bs_support k)).
  Parameter f_spec : forall k (x:Bvector k), x = ap_finv (ap_f x).
 
  (* Maximum number of queries made to the hash oracle, minus one *)
@@ -202,8 +203,8 @@ Module Entries (TDP:TRAPDOOR_PERM).
 
  Definition targs (o:t) : list T.type :=
   match o with 
-  | Oq => nil
-  | Of | Ofinv => T.User Bitstring :: nil
+  | Oq => List.nil
+  | Of | Ofinv => T.User Bitstring :: List.nil
   end.
 
  Definition tres (o:t) := 
@@ -261,7 +262,7 @@ Module Entries (TDP:TRAPDOOR_PERM).
   Notation "'apply_finv' y" := (E.Eop (O.Ouser Ofinv) {y}) (at level 40).
 
   (* Maximum number of queries to the hash oracle, minus one *)
-  Notation "'q'" := (E.Eop (O.Ouser Oq) (dnil E.expr)).
+  Notation "'q'" := (E.Eop (O.Ouser Oq) (@dnil _ E.expr)).
 
   (* Uniform sampling of bitstrings of fixed length (the security parameter) *)
   Notation "'{0,1}^k'" := (E.Duser (Usupport T.User)).
@@ -291,7 +292,7 @@ Module Entries (TDP:TRAPDOOR_PERM).
    | op => fun args => E.Eop (O.Ouser op) args
    end.
 
-  Implicit Arguments simpl_op [].
+  Arguments simpl_op : clear implicits.
 
   Lemma simpl_op_spec : forall k op args (m:Mem.t k),
    E.eval_expr (simpl_op op args) m = E.eval_expr (E.Eop (O.Ouser op) args) m.
@@ -339,7 +340,7 @@ Module Entries (TDP:TRAPDOOR_PERM).
     (forall t (x:Var.var t), 
      BP.Vset.mem x (BP.fv_distr s) -> T.size (m x) <= peval p k)  ->
     let (l,n) := E.ceval_support s m in
-     (forall v, In v l -> T.size v <= peval (F p) k) /\
+     (forall v, List.In v l -> T.size v <= peval (F p) k) /\
      n <= peval (G p) k.
 
   Definition utsize : UT.t -> nat := fun _ => 1.

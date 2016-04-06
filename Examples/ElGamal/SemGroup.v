@@ -9,6 +9,7 @@
 (** * SemGroup.v : Language extension with a cyclic group type *)
  
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Import PPT.
 Require Export BuildTac.

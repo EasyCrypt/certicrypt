@@ -1,5 +1,5 @@
 -o Makefile
--I ../../ALEA -I ../../Lib -I ../../Semantics 
+-R ../../ALEA CC -R ../../Lib CC -R ../../Semantics CC -R . CC
 Group2.v
 SemGroup.v
 ElGamal.v

@@ -9,9 +9,9 @@
 (** * FDH.v: Exact security of the Full Domain Hash signature scheme *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Import FDHsem.
-
 
 (** [f] is a one-way permutation *)
 Section ONE_WAYNESS.
@@ -167,7 +167,7 @@ Section ADVERSARY_AND_PROOF.
  *)
 
  (** *** Specification of the adversary *)
- Definition A_params : var_decl (Proc.targs A) := dnil _.
+ Definition A_params : var_decl (Proc.targs A) := dnil.
 
  Variable A_body : cmd.
 
@@ -177,10 +177,10 @@ Section ADVERSARY_AND_PROOF.
  (** Adversary's own procedures *)
  Variable adv_env : env.
  
- Definition Hash_params : var_decl (Proc.targs Hash) := dcons _ mH (dnil _).
+ Definition Hash_params : var_decl (Proc.targs Hash) := dcons _ mH (dnil).
  Definition Hash_ret : E.expr (T.User Bitstring) := L[{mH}].
 
- Definition Sign_params : var_decl (Proc.targs Sign) := dcons _ mS (dnil _). 
+ Definition Sign_params : var_decl (Proc.targs Sign) := dcons _ mS (dnil). 
  Definition Sign_ret : E.expr (T.User Bitstring) := retS.
 
  (** Environment constructor *)
@@ -1301,7 +1301,7 @@ Section ADVERSARY_AND_PROOF.
  Theorem Pr_G4_G5 : forall k (m:Mem.t k), 
   Pr E4' G4 m (@S3 k) <= Pr E5' G5 m (@S3 k).
  Proof.
-  intros; clear.
+  intros.
   apply Ole_eq_left with (Pr E4' G4 m (@S3 k [&&] negP (EP k bad))).
   symmetry.
 
@@ -1557,7 +1557,7 @@ Section ADVERSARY_AND_PROOF.
   match goal with
   |- ?A = ?B => generalize (UT.i_eqb_spec A B); rewrite H; auto
   end.  
-  intro Hex; rewrite Hex in Hin; discriminate.
+  simpl; intro Hex; rewrite Hex in Hin; discriminate.
 
   eqobs_in iE5'E5_H; rewrite <- andR_comm, andR_assoc; apply proj1_MR.
 
@@ -1791,12 +1791,12 @@ Section ADVERSARY_AND_PROOF.
    | Some e => snd e
    | None => 0
    end (m1 mH)); intro Hj.
-  rewrite (nat_eqb_true Hj) in H4.
+  simpl in Hj, H4; rewrite (nat_eqb_true Hj) in H4.
   elim H3; clear H3.
   destruct (H1 H).
   rewrite (nat_eqb_true Hj) in H3.
   exists x; trivial.
-  auto.
+  simpl in Hj; rewrite Hj; auto.
  Qed.
 
  Lemma dec_inv5 : decMR inv5.
@@ -1884,10 +1884,10 @@ Section ADVERSARY_AND_PROOF.
    | None => 0
    end); intro Heq.
   intros [Hle _].
-  rewrite <- (nat_eqb_true Heq) in H4.
+  simpl in Heq, H4; rewrite <- (nat_eqb_true Heq) in H4.
   auto.
 
-  intros [_ ?]; discriminate.
+  intros [_ ?]; simpl in Heq; rewrite Heq in H; discriminate.
   
   (* [!(madv in_dom L)] *)
   unfold inv5; eqobsrel_tail; unfold EP1, implMR, notR, andR;
@@ -1918,8 +1918,14 @@ Section ADVERSARY_AND_PROOF.
   simpl; simpl in H; trivial.
   destruct (nat_eqb (m1 madv)
    (O.assoc (nat_eqb (m1 j)) 0%nat (m1 M))); trivial.
-  simpl in H; simpl.
-  rewrite H; trivial.
+  revert H; case (_ && _)%bool; trivial; simpl.
+  intros; rewrite H; trivial.
+
+  revert H; case (_ && _)%bool; trivial; simpl.
+  intros; rewrite H; trivial.
+
+  revert H; case (_ && _)%bool; trivial; simpl.
+  intros; rewrite H; trivial.
 
   unfold req_mem_rel, trueR, andR; auto.
  Qed.
@@ -2019,7 +2025,7 @@ Section ADVERSARY_AND_PROOF.
  (** Definition of the inverter [B] *)
  Notation Barg := (Var.Lvar (T.User Bitstring) 70).
 
- Definition B_params : var_decl (Proc.targs B) := dcons _ Barg (dnil _).
+ Definition B_params : var_decl (Proc.targs B) := dcons _ Barg (dnil).
 
  Definition B_body := 
   [

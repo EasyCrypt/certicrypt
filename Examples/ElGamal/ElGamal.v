@@ -9,6 +9,7 @@
 (** * ElGamal.v : Semantic security of the ElGamal encryption scheme *)
 
 Set Implicit Arguments.
+Set Asymmetric Patterns.
 
 Require Import SemGroup.
 
@@ -118,7 +119,7 @@ Close Scope positive_scope.
 
 
 (** ** Key Generation *)
-Definition KG_params : (var_decl (Proc.targs KG)) := dnil _.
+Definition KG_params : (var_decl (Proc.targs KG)) := dnil.
 
 Definition KG_body := 
  [
@@ -129,7 +130,7 @@ Definition KG_res := (x | g^x).
 
 (** ** Encryption *)
 Definition Enc_params : (var_decl (Proc.targs Enc)) :=  
- dcons _ alpha' (dcons _ mb' (dnil _)).
+ dcons _ alpha' (dcons _ mb' (dnil)).
 
 Definition Enc_body :=
  [
@@ -184,7 +185,7 @@ Definition G2 : cmd :=
 
 (* The adversary for DDH *)
 Definition B_params : (var_decl (Proc.targs B)) :=  
- dcons _ alpha (dcons _ beta (dcons _ gamma (dnil _))).
+ dcons _ alpha (dcons _ beta (dcons _ gamma (dnil))).
 
 Definition B_body :=
  [
@@ -208,7 +209,7 @@ Section ADVERSARY_AND_PROOF.
  Variable env_adv : env.
 
  (** *** Specification of the adversary *)
- Definition A_params : var_decl (Proc.targs A) := dcons _ alpha (dnil _).
+ Definition A_params : var_decl (Proc.targs A) := dcons _ alpha (dnil).
 
  Variable A_body : cmd.
 
@@ -216,7 +217,7 @@ Section ADVERSARY_AND_PROOF.
  Variable A_ret : E.expr (T.Pair (T.User Tg) (T.User Tg)).
   
  Definition A'_params : var_decl (Proc.targs A') :=
-  dcons _ alpha (dcons _ beta (dcons _ zeta (dnil _))).
+  dcons _ alpha (dcons _ beta (dcons _ zeta (dnil))).
 
  Variable A'_body : cmd.
 

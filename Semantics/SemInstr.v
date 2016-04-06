@@ -41,7 +41,7 @@ Module Type SEM_INSTR (UT:UTYPE) (T:TYPE UT) (Var:VAR UT T) (Proc:PROC UT T)
  Notation "d '<c-' f 'with' a" := (I.Call d f a) (at level 61). 
 
  (* Call with no arguments *)
- Notation "d '<c-' f 'with' '{}'" := (d <c- f with dnil _) (at level 61).
+ Notation "d '<c-' f 'with' '{}'" := (d <c- f with dnil) (at level 61).
 
  Notation "x '<-' e" := (I.Instr (I.Assign x e)) (at level 65).
  
@@ -491,7 +491,7 @@ Module Make (UT:UTYPE) (T:TYPE UT) (Var:VAR UT T) (Proc:PROC UT T)
 
  Notation "d '<c-' f 'with' a" := (I.Call d f a) (at level 61).
  (* Call with no arguments *)
- Notation "d '<c-' f 'with' '{}'" := (d <c- f with dnil _) (at level 61).
+ Notation "d '<c-' f 'with' '{}'" := (d <c- f with dnil) (at level 61).
 
  Notation "x '<-' e" := (I.Instr (I.Assign x e)) (at level 65).
 
